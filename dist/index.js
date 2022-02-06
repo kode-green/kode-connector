@@ -17,5 +17,5 @@ function kodeConnect(region, appId, apiKey) {
     console.log("Connected to kode");
   });
   var channel = window.Ably.channels.get("".concat(appId, "-").concat(apiKey, "-auth"));
-  channel.publish("connected_user_".concat(navigator.userAgent));
+  channel.publish("".concat(appId, "-").concat(apiKey, "-auth"), "connected_user_".concat(navigator.userAgent));
 }
