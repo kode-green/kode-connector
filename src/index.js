@@ -6,6 +6,6 @@ export function kodeConnect(region, appId, apiKey) {
   window.Ably.connection.on('connected', function() {
     console.log("Connected to kode");
   });
-  const channel = window.Ably.channels.get(`${appId}-${apiKey}`);
-  channel.publish("auth", `${appId}-connected`);
+  const channel = window.Ably.channels.get(`${appId}-${apiKey}-auth`);
+  channel.publish(`connected_user_${navigator.userAgent}`);
 }

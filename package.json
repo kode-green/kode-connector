@@ -1,6 +1,6 @@
 {
   "name": "@kodegreen/kode-connector",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "Front end connector to Kode Green Baas",
   "license": "MIT",
   "author": "Steve Van Rensburg",
