@@ -3,11 +3,11 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.isAuthenticated = isAuthenticated;
 exports.kodeAuth = kodeAuth;
 exports.kodeConnect = kodeConnect;
 exports.kodeFlow = kodeFlow;
 exports.kodeLogin = kodeLogin;
+exports.kodeLogout = kodeLogout;
 exports.kodeSignup = kodeSignup;
 
 var _ably = _interopRequireDefault(require("ably"));
@@ -48,13 +48,7 @@ function _kodeLogin() {
             }, function (err, resp) {
               if (err) return alert('Something went wrong: ' + err.message);
               return alert('success !' + resp.response_type);
-            }); // // Trigger login using popup mode with credentials to enterprise connections
-            // webAuth.popup.loginWithCredentials({
-            //   connection: 'Username-Password-Authentication',
-            //   username: 'testuser',
-            //   password: 'testpass',
-            //   scope: 'openid'
-            // });
+            });
 
           case 2:
           case "end":
@@ -66,16 +60,46 @@ function _kodeLogin() {
   return _kodeLogin.apply(this, arguments);
 }
 
-function kodeSignup(_x5, _x6, _x7, _x8) {
-  return _kodeSignup.apply(this, arguments);
+function kodeLogout(_x5, _x6, _x7) {
+  return _kodeLogout.apply(this, arguments);
 }
 
-function _kodeSignup() {
-  _kodeSignup = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(domain, clientId, email, password) {
+function _kodeLogout() {
+  _kodeLogout = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(domain, clientId, returnTo) {
     var webAuth;
     return regeneratorRuntime.wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
+          case 0:
+            webAuth = new _auth0Js["default"].WebAuth({
+              domain: domain,
+              clientID: clientId
+            });
+            webAuth.logout({
+              returnTo: returnTo,
+              client_id: clientId
+            });
+
+          case 2:
+          case "end":
+            return _context2.stop();
+        }
+      }
+    }, _callee2);
+  }));
+  return _kodeLogout.apply(this, arguments);
+}
+
+function kodeSignup(_x8, _x9, _x10, _x11) {
+  return _kodeSignup.apply(this, arguments);
+}
+
+function _kodeSignup() {
+  _kodeSignup = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(domain, clientId, email, password) {
+    var webAuth;
+    return regeneratorRuntime.wrap(function _callee3$(_context3) {
+      while (1) {
+        switch (_context3.prev = _context3.next) {
           case 0:
             webAuth = new _auth0Js["default"].WebAuth({
               domain: domain,
@@ -92,23 +116,23 @@ function _kodeSignup() {
 
           case 2:
           case "end":
-            return _context2.stop();
+            return _context3.stop();
         }
       }
-    }, _callee2);
+    }, _callee3);
   }));
   return _kodeSignup.apply(this, arguments);
 }
 
-function kodeAuth(_x9, _x10, _x11, _x12, _x13, _x14) {
+function kodeAuth(_x12, _x13, _x14, _x15, _x16, _x17) {
   return _kodeAuth.apply(this, arguments);
 }
 
 function _kodeAuth() {
-  _kodeAuth = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(region, appId, domain, clientId, callBackUrl, audience) {
-    return regeneratorRuntime.wrap(function _callee3$(_context3) {
+  _kodeAuth = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4(region, appId, domain, clientId, callBackUrl, audience) {
+    return regeneratorRuntime.wrap(function _callee4$(_context4) {
       while (1) {
-        switch (_context3.prev = _context3.next) {
+        switch (_context4.prev = _context4.next) {
           case 0:
             window.Ably = new _ablyCommonjs.Realtime(region);
             (0, _auth0SpaJs["default"])({
@@ -125,38 +149,12 @@ function _kodeAuth() {
 
           case 2:
           case "end":
-            return _context3.stop();
-        }
-      }
-    }, _callee3);
-  }));
-  return _kodeAuth.apply(this, arguments);
-}
-
-function isAuthenticated(_x15) {
-  return _isAuthenticated.apply(this, arguments);
-}
-
-function _isAuthenticated() {
-  _isAuthenticated = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4(auth0) {
-    return regeneratorRuntime.wrap(function _callee4$(_context4) {
-      while (1) {
-        switch (_context4.prev = _context4.next) {
-          case 0:
-            _context4.next = 2;
-            return auth0.isAuthenticated();
-
-          case 2:
-            return _context4.abrupt("return", _context4.sent);
-
-          case 3:
-          case "end":
             return _context4.stop();
         }
       }
     }, _callee4);
   }));
-  return _isAuthenticated.apply(this, arguments);
+  return _kodeAuth.apply(this, arguments);
 }
 
 function kodeConnect(region, appId, apiKey) {

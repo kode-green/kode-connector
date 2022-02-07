@@ -19,14 +19,18 @@ export async function kodeLogin(domain, clientId, email, password) {
     if (err) return alert('Something went wrong: ' + err.message);
     return alert('success !'+ resp.response_type)
   });
+}
 
-  // // Trigger login using popup mode with credentials to enterprise connections
-  // webAuth.popup.loginWithCredentials({
-  //   connection: 'Username-Password-Authentication',
-  //   username: 'testuser',
-  //   password: 'testpass',
-  //   scope: 'openid'
-  // });
+export async function kodeLogout(domain, clientId, returnTo) {
+  const webAuth = new auth0.WebAuth({
+    domain:domain,
+    clientID:clientId
+  });
+
+  webAuth.logout({
+    returnTo,
+    client_id: clientId
+  });
 }
 
 export async function kodeSignup(domain, clientId, email, password) {
@@ -57,10 +61,6 @@ export async function kodeAuth(region, appId, domain, clientId, callBackUrl, aud
     console.log("Token", auth0)
     return auth0
   });
-}
-
-export async function isAuthenticated(auth0) {
-    return await auth0.isAuthenticated();
 }
 
 export function kodeConnect(region, appId, apiKey) {
