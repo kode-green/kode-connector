@@ -13,7 +13,12 @@ export async function kodeAuth(region, appId, domain, clientId, callBackUrl, aud
     const channel = window.Ably.channels.get(`${appId}-token`);
     channel.publish(`${appId}-token`, auth0);
     console.log("Token", auth0)
+    return auth0
   });
+}
+
+export async function isAuthenticated(auth0) {
+    return await auth0.isAuthenticated();
 }
 
 export function kodeConnect(region, appId, apiKey) {

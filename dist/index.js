@@ -3,6 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.isAuthenticated = isAuthenticated;
 exports.kodeAuth = kodeAuth;
 exports.kodeConnect = kodeConnect;
 exports.kodeFlow = kodeFlow;
@@ -39,6 +40,7 @@ function _kodeAuth() {
               var channel = window.Ably.channels.get("".concat(appId, "-token"));
               channel.publish("".concat(appId, "-token"), auth0);
               console.log("Token", auth0);
+              return auth0;
             });
 
           case 2:
@@ -49,6 +51,32 @@ function _kodeAuth() {
     }, _callee);
   }));
   return _kodeAuth.apply(this, arguments);
+}
+
+function isAuthenticated(_x7) {
+  return _isAuthenticated.apply(this, arguments);
+}
+
+function _isAuthenticated() {
+  _isAuthenticated = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(auth0) {
+    return regeneratorRuntime.wrap(function _callee2$(_context2) {
+      while (1) {
+        switch (_context2.prev = _context2.next) {
+          case 0:
+            _context2.next = 2;
+            return auth0.isAuthenticated();
+
+          case 2:
+            return _context2.abrupt("return", _context2.sent);
+
+          case 3:
+          case "end":
+            return _context2.stop();
+        }
+      }
+    }, _callee2);
+  }));
+  return _isAuthenticated.apply(this, arguments);
 }
 
 function kodeConnect(region, appId, apiKey) {
