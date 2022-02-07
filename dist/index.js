@@ -15,6 +15,8 @@ var _ablyCommonjs = require("ably/browser/static/ably-commonjs.js");
 
 var _auth0SpaJs = _interopRequireDefault(require("@auth0/auth0-spa-js"));
 
+var _auth0Js = _interopRequireDefault(require("auth0-js"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
@@ -32,7 +34,7 @@ function _kodeSignup() {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            webAuth = new auth0.WebAuth({
+            webAuth = new _auth0Js["default"].WebAuth({
               domain: domain,
               clientID: clientId
             });

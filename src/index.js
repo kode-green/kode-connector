@@ -1,6 +1,7 @@
 import Ably from 'ably';
 import { Realtime } from 'ably/browser/static/ably-commonjs.js';
 import createAuth0Client from '@auth0/auth0-spa-js';
+import auth0 from 'auth0-js';
 
 export async function kodeSignup(domain, clientId) {
   const webAuth = new auth0.WebAuth({
