@@ -1,6 +1,6 @@
 {
   "name": "@kodegreen/kode-connector",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "description": "Front end connector to Kode Green Baas",
   "license": "MIT",
   "author": "Steve Van Rensburg",
@@ -15,7 +15,8 @@
   "homepage": "https://github.com/kode-green/kode-connector#readme",
   "dependencies": {
     "@auth0/auth0-spa-js": "^1.19.4",
-    "ably": "^1.2.17"
+    "ably": "^1.2.17",
+    "auth0-js": "^9.19.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.17.0",
