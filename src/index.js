@@ -3,6 +3,32 @@ import { Realtime } from 'ably/browser/static/ably-commonjs.js';
 import createAuth0Client from '@auth0/auth0-spa-js';
 import auth0 from 'auth0-js';
 
+export async function kodeLogin(domain, clientId, email, password) {
+  const webAuth = new auth0.WebAuth({
+    domain:domain,
+    clientID:clientId
+  });
+
+  // Trigger login using redirect with credentials to enterprise connections
+  webAuth.redirect.loginWithCredentials({
+    connection: 'Username-Password-Authentication',
+    username: email,
+    password: password,
+    scope: 'openid'
+  }, (err, resp) => {
+    if (err) return alert('Something went wrong: ' + err.message);
+    return alert('success !'+ resp.response_type)
+  });
+
+  // // Trigger login using popup mode with credentials to enterprise connections
+  // webAuth.popup.loginWithCredentials({
+  //   connection: 'Username-Password-Authentication',
+  //   username: 'testuser',
+  //   password: 'testpass',
+  //   scope: 'openid'
+  // });
+}
+
 export async function kodeSignup(domain, clientId, email, password) {
   const webAuth = new auth0.WebAuth({
     domain:domain,
@@ -12,7 +38,7 @@ export async function kodeSignup(domain, clientId, email, password) {
     connection: 'Username-Password-Authentication',
     email,
     password,
-  }, function (err) {
+  }, (err) => {
     if (err) return alert('Something went wrong: ' + err.message);
     return alert('success signup without login!')
   });
