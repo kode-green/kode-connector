@@ -3,22 +3,15 @@ import { Realtime } from 'ably/browser/static/ably-commonjs.js';
 import createAuth0Client from '@auth0/auth0-spa-js';
 import auth0 from 'auth0-js';
 
-export async function kodeSignup(domain, clientId) {
+export async function kodeSignup(domain, clientId, email, password) {
   const webAuth = new auth0.WebAuth({
     domain:domain,
     clientID:clientId
   });
   webAuth.signup({
     connection: 'Username-Password-Authentication',
-    email: 'steve@rensco.co.uk',
-    password: '123456789',
-    username: "Steve",
-    given_name: "Steve",
-    family_name: "Van",
-    name: "Steve Van",
-    nickname: "Steve",
-    picture: "http://example.org/jdoe.png",
-    user_metadata: { plan: 'silver', team_id: 'a111' }
+    email,
+    password,
   }, function (err) {
     if (err) return alert('Something went wrong: ' + err.message);
     return alert('success signup without login!')

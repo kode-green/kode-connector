@@ -23,12 +23,12 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
-function kodeSignup(_x, _x2) {
+function kodeSignup(_x, _x2, _x3, _x4) {
   return _kodeSignup.apply(this, arguments);
 }
 
 function _kodeSignup() {
-  _kodeSignup = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(domain, clientId) {
+  _kodeSignup = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(domain, clientId, email, password) {
     var webAuth;
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
@@ -40,18 +40,8 @@ function _kodeSignup() {
             });
             webAuth.signup({
               connection: 'Username-Password-Authentication',
-              email: 'steve@rensco.co.uk',
-              password: '123456789',
-              username: "Steve",
-              given_name: "Steve",
-              family_name: "Van",
-              name: "Steve Van",
-              nickname: "Steve",
-              picture: "http://example.org/jdoe.png",
-              user_metadata: {
-                plan: 'silver',
-                team_id: 'a111'
-              }
+              email: email,
+              password: password
             }, function (err) {
               if (err) return alert('Something went wrong: ' + err.message);
               return alert('success signup without login!');
@@ -67,7 +57,7 @@ function _kodeSignup() {
   return _kodeSignup.apply(this, arguments);
 }
 
-function kodeAuth(_x3, _x4, _x5, _x6, _x7, _x8) {
+function kodeAuth(_x5, _x6, _x7, _x8, _x9, _x10) {
   return _kodeAuth.apply(this, arguments);
 }
 
@@ -100,7 +90,7 @@ function _kodeAuth() {
   return _kodeAuth.apply(this, arguments);
 }
 
-function isAuthenticated(_x9) {
+function isAuthenticated(_x11) {
   return _isAuthenticated.apply(this, arguments);
 }
 
