@@ -16,8 +16,12 @@ export async function kodeLogin(config, userAuth) {
     password: userAuth.password,
     scope: 'openid'
   }, (err, resp) => {
-    if (err) return alert('Something went wrong: ' + err.message);
-    return alert('success !'+ resp.response_type)
+    if (err) return alert(
+      'Something went wrong: ' + err.message
+    );
+    return alert(
+      'success !'+ resp.response_type
+    )
   });
 }
 
@@ -43,8 +47,12 @@ export async function kodeSignup(config, user) {
     email: user.email,
     password: user.password
   }, (err) => {
-    if (err) return alert('Something went wrong: ' + err.message);
-    return alert('success signup without login!')
+    if (err) return alert(
+      'Something went wrong: ' + err.message
+    );
+    return alert(
+      'success signup without login!'
+    )
   });
 }
 
@@ -53,20 +61,43 @@ export function kodeConnect(config, appId, apiKey) {
   window.Ably.connection.on('connected', function() {
     console.log("Connected to kode");
   });
-  const channel = window.Ably.channels.get(`${appId}-${apiKey}-auth`);
-  channel.publish(`${appId}-${apiKey}-auth`, `connected_user_${navigator.userAgent}`);
+  const channel = window.Ably.channels.get(
+    `${appId}-${apiKey}-auth`
+  );
+  channel.publish(
+    `${appId}-${apiKey}-auth`,
+    `connected_user_${navigator.userAgent}`
+  );
 }
 
 export function kodeFlow(flowId, appId, apiKey) {
-  const channel = window.Ably.channels.get(`${flowId}-${apiKey}-flow`);
-  channel.publish(`${appId}-${apiKey}-auth`, `connected_user_${navigator.userAgent}`);
+  const channel = window.Ably.channels.get(
+    `${flowId}-${apiKey}-flow`
+  );
+  channel.publish(
+    `${appId}-${apiKey}-auth`,
+    `connected_user_${navigator.userAgent}`
+  );
 }
-export function kodeFlowSub(flowId, apiKey) {
-  const channel = window.Ably.channels.get(`${flowId}-${apiKey}-flow`);
-  // Create ably subscribe channel
-  channel.subscribe((msg) => {
-    if(msg) {
-      console.log(msg.data)
+
+export function kodeFlowTrigger(flowId, apiKey, data) {
+  const channel = window.Ably.channels.get(
+    `${flowId}-${apiKey}-flow`
+  );
+  // subscribe to channel for this flow
+  channel.publish(
+    `${flowId}-${apiKey}-flow`,
+    data
+  );
+}
+export function kodeFlowData(flowId, apiKey) {
+  const channel = window.Ably.channels.get(
+    `${flowId}-${apiKey}-flow`
+  );
+  // subscribe to channel for this flow
+  channel.subscribe((data) => {
+    if(data) {
+      return data;
     }
   })
 }

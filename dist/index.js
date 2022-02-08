@@ -5,7 +5,8 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.kodeConnect = kodeConnect;
 exports.kodeFlow = kodeFlow;
-exports.kodeFlowSub = kodeFlowSub;
+exports.kodeFlowData = kodeFlowData;
+exports.kodeFlowTrigger = kodeFlowTrigger;
 exports.kodeLogin = kodeLogin;
 exports.kodeLogout = kodeLogout;
 exports.kodeSignup = kodeSignup;
@@ -138,12 +139,18 @@ function kodeFlow(flowId, appId, apiKey) {
   channel.publish("".concat(appId, "-").concat(apiKey, "-auth"), "connected_user_".concat(navigator.userAgent));
 }
 
-function kodeFlowSub(flowId, apiKey) {
-  var channel = window.Ably.channels.get("".concat(flowId, "-").concat(apiKey, "-flow")); // Create ably subscribe channel
+function kodeFlowTrigger(flowId, apiKey, data) {
+  var channel = window.Ably.channels.get("".concat(flowId, "-").concat(apiKey, "-flow")); // subscribe to channel for this flow
 
-  channel.subscribe(function (msg) {
-    if (msg) {
-      console.log(msg.data);
+  channel.publish("".concat(flowId, "-").concat(apiKey, "-flow"), data);
+}
+
+function kodeFlowData(flowId, apiKey) {
+  var channel = window.Ably.channels.get("".concat(flowId, "-").concat(apiKey, "-flow")); // subscribe to channel for this flow
+
+  channel.subscribe(function (data) {
+    if (data) {
+      return data;
     }
   });
 }
