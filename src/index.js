@@ -3,17 +3,17 @@ import { Realtime } from 'ably/browser/static/ably-commonjs.js';
 import createAuth0Client from '@auth0/auth0-spa-js';
 import auth0 from 'auth0-js';
 
-export async function kodeLogin(domain, clientId, email, password) {
+export async function kodeLogin(config, userAuth) {
   const webAuth = new auth0.WebAuth({
-    domain:domain,
-    clientID:clientId
+    domain: config.domain,
+    clientID: config.clientId
   });
 
   // Trigger login using redirect with credentials to enterprise connections
   webAuth.redirect.loginWithCredentials({
     connection: 'Username-Password-Authentication',
-    username: email,
-    password: password,
+    username: userAuth.email,
+    password: userAuth.password,
     scope: 'openid'
   }, (err, resp) => {
     if (err) return alert('Something went wrong: ' + err.message);
@@ -21,50 +21,35 @@ export async function kodeLogin(domain, clientId, email, password) {
   });
 }
 
-export async function kodeLogout(domain, clientId, returnTo) {
+export async function kodeLogout(config, redirect) {
   const webAuth = new auth0.WebAuth({
-    domain:domain,
-    clientID:clientId
+    domain: config.domain,
+    clientID: config.clientId
   });
 
   webAuth.logout({
-    returnTo,
-    client_id: clientId
+    returnTo: redirect,
+    client_id: config.clientId
   });
 }
 
-export async function kodeSignup(domain, clientId, email, password) {
+export async function kodeSignup(config, user) {
   const webAuth = new auth0.WebAuth({
-    domain:domain,
-    clientID:clientId
+    domain: config.domain,
+    clientID: config.clientId
   });
   webAuth.signup({
     connection: 'Username-Password-Authentication',
-    email,
-    password,
+    email: user.email,
+    password: user.password
   }, (err) => {
     if (err) return alert('Something went wrong: ' + err.message);
     return alert('success signup without login!')
   });
 }
 
-export async function kodeAuth(region, appId, domain, clientId, callBackUrl, audience) {
-  window.Ably = new Realtime(region);
-  createAuth0Client({
-    domain,
-    client_id: clientId,
-    redirect_uri: callBackUrl,
-    audience: audience
-  }).then(auth0 => {
-    const channel = window.Ably.channels.get(`${appId}-token`);
-    channel.publish(`${appId}-token`, auth0);
-    console.log("Token", auth0)
-    return auth0
-  });
-}
-
-export function kodeConnect(region, appId, apiKey) {
-  window.Ably = new Realtime(region);
+export function kodeConnect(config, appId, apiKey) {
+  window.Ably = new Realtime(config.region);
   window.Ably.connection.on('connected', function() {
     console.log("Connected to kode");
   });
@@ -72,7 +57,16 @@ export function kodeConnect(region, appId, apiKey) {
   channel.publish(`${appId}-${apiKey}-auth`, `connected_user_${navigator.userAgent}`);
 }
 
-export function kodeFlow(flowId, appId, data) {
+export function kodeFlow(flowId, appId, apiKey) {
   const channel = window.Ably.channels.get(`${flowId}-${apiKey}-flow`);
   channel.publish(`${appId}-${apiKey}-auth`, `connected_user_${navigator.userAgent}`);
+}
+export function kodeFlowSub(flowId, apiKey) {
+  const channel = window.Ably.channels.get(`${flowId}-${apiKey}-flow`);
+  // Create ably subscribe channel
+  channel.subscribe((msg) => {
+    if(msg) {
+      console.log(msg.data)
+    }
+  })
 }

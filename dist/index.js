@@ -3,9 +3,9 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.kodeAuth = kodeAuth;
 exports.kodeConnect = kodeConnect;
 exports.kodeFlow = kodeFlow;
+exports.kodeFlowSub = kodeFlowSub;
 exports.kodeLogin = kodeLogin;
 exports.kodeLogout = kodeLogout;
 exports.kodeSignup = kodeSignup;
@@ -24,26 +24,26 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
-function kodeLogin(_x, _x2, _x3, _x4) {
+function kodeLogin(_x, _x2) {
   return _kodeLogin.apply(this, arguments);
 }
 
 function _kodeLogin() {
-  _kodeLogin = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(domain, clientId, email, password) {
+  _kodeLogin = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(config, userAuth) {
     var webAuth;
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
             webAuth = new _auth0Js["default"].WebAuth({
-              domain: domain,
-              clientID: clientId
+              domain: config.domain,
+              clientID: config.clientId
             }); // Trigger login using redirect with credentials to enterprise connections
 
             webAuth.redirect.loginWithCredentials({
               connection: 'Username-Password-Authentication',
-              username: email,
-              password: password,
+              username: userAuth.email,
+              password: userAuth.password,
               scope: 'openid'
             }, function (err, resp) {
               if (err) return alert('Something went wrong: ' + err.message);
@@ -60,24 +60,24 @@ function _kodeLogin() {
   return _kodeLogin.apply(this, arguments);
 }
 
-function kodeLogout(_x5, _x6, _x7) {
+function kodeLogout(_x3, _x4) {
   return _kodeLogout.apply(this, arguments);
 }
 
 function _kodeLogout() {
-  _kodeLogout = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(domain, clientId, returnTo) {
+  _kodeLogout = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(config, redirect) {
     var webAuth;
     return regeneratorRuntime.wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
             webAuth = new _auth0Js["default"].WebAuth({
-              domain: domain,
-              clientID: clientId
+              domain: config.domain,
+              clientID: config.clientId
             });
             webAuth.logout({
-              returnTo: returnTo,
-              client_id: clientId
+              returnTo: redirect,
+              client_id: config.clientId
             });
 
           case 2:
@@ -90,25 +90,25 @@ function _kodeLogout() {
   return _kodeLogout.apply(this, arguments);
 }
 
-function kodeSignup(_x8, _x9, _x10, _x11) {
+function kodeSignup(_x5, _x6) {
   return _kodeSignup.apply(this, arguments);
 }
 
 function _kodeSignup() {
-  _kodeSignup = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(domain, clientId, email, password) {
+  _kodeSignup = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(config, user) {
     var webAuth;
     return regeneratorRuntime.wrap(function _callee3$(_context3) {
       while (1) {
         switch (_context3.prev = _context3.next) {
           case 0:
             webAuth = new _auth0Js["default"].WebAuth({
-              domain: domain,
-              clientID: clientId
+              domain: config.domain,
+              clientID: config.clientId
             });
             webAuth.signup({
               connection: 'Username-Password-Authentication',
-              email: email,
-              password: password
+              email: user.email,
+              password: user.password
             }, function (err) {
               if (err) return alert('Something went wrong: ' + err.message);
               return alert('success signup without login!');
@@ -124,41 +124,8 @@ function _kodeSignup() {
   return _kodeSignup.apply(this, arguments);
 }
 
-function kodeAuth(_x12, _x13, _x14, _x15, _x16, _x17) {
-  return _kodeAuth.apply(this, arguments);
-}
-
-function _kodeAuth() {
-  _kodeAuth = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4(region, appId, domain, clientId, callBackUrl, audience) {
-    return regeneratorRuntime.wrap(function _callee4$(_context4) {
-      while (1) {
-        switch (_context4.prev = _context4.next) {
-          case 0:
-            window.Ably = new _ablyCommonjs.Realtime(region);
-            (0, _auth0SpaJs["default"])({
-              domain: domain,
-              client_id: clientId,
-              redirect_uri: callBackUrl,
-              audience: audience
-            }).then(function (auth0) {
-              var channel = window.Ably.channels.get("".concat(appId, "-token"));
-              channel.publish("".concat(appId, "-token"), auth0);
-              console.log("Token", auth0);
-              return auth0;
-            });
-
-          case 2:
-          case "end":
-            return _context4.stop();
-        }
-      }
-    }, _callee4);
-  }));
-  return _kodeAuth.apply(this, arguments);
-}
-
-function kodeConnect(region, appId, apiKey) {
-  window.Ably = new _ablyCommonjs.Realtime(region);
+function kodeConnect(config, appId, apiKey) {
+  window.Ably = new _ablyCommonjs.Realtime(config.region);
   window.Ably.connection.on('connected', function () {
     console.log("Connected to kode");
   });
@@ -166,7 +133,17 @@ function kodeConnect(region, appId, apiKey) {
   channel.publish("".concat(appId, "-").concat(apiKey, "-auth"), "connected_user_".concat(navigator.userAgent));
 }
 
-function kodeFlow(flowId, appId, data) {
+function kodeFlow(flowId, appId, apiKey) {
   var channel = window.Ably.channels.get("".concat(flowId, "-").concat(apiKey, "-flow"));
   channel.publish("".concat(appId, "-").concat(apiKey, "-auth"), "connected_user_".concat(navigator.userAgent));
+}
+
+function kodeFlowSub(flowId, apiKey) {
+  var channel = window.Ably.channels.get("".concat(flowId, "-").concat(apiKey, "-flow")); // Create ably subscribe channel
+
+  channel.subscribe(function (msg) {
+    if (msg) {
+      console.log(msg.data);
+    }
+  });
 }
