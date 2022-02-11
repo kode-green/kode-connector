@@ -133,22 +133,23 @@ function kodeConnect(config, appId, apiKey) {
   channel.publish("".concat(appId, "-").concat(apiKey, "-auth"), "connected_user_".concat(navigator.userAgent));
 }
 
-function kodeFlowTrigger(_x7, _x8) {
+function kodeFlowTrigger(_x7, _x8, _x9) {
   return _kodeFlowTrigger.apply(this, arguments);
 }
 
 function _kodeFlowTrigger() {
-  _kodeFlowTrigger = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4(connectorId, data) {
+  _kodeFlowTrigger = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4(config, connectorId, data) {
     var channel;
     return regeneratorRuntime.wrap(function _callee4$(_context4) {
       while (1) {
         switch (_context4.prev = _context4.next) {
           case 0:
+            window.Ably = new _ablyCommonjs.Realtime(config.region);
             channel = window.Ably.channels.get("".concat(connectorId, "-flow")); // subscribe to channel for this flow
 
             channel.publish("".concat(connectorId, "-flow"), data);
 
-          case 2:
+          case 3:
           case "end":
             return _context4.stop();
         }
@@ -158,7 +159,7 @@ function _kodeFlowTrigger() {
   return _kodeFlowTrigger.apply(this, arguments);
 }
 
-function kodeFlowData(_x9, _x10) {
+function kodeFlowData(_x10, _x11) {
   return _kodeFlowData.apply(this, arguments);
 }
 

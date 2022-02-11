@@ -70,7 +70,8 @@ export function kodeConnect(config, appId, apiKey) {
   );
 }
 
-export async function kodeFlowTrigger(connectorId, data) {
+export async function kodeFlowTrigger(config, connectorId, data) {
+  window.Ably = new Realtime(config.region);
   const channel = window.Ably.channels.get(
     `${connectorId}-flow`
   );
