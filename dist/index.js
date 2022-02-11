@@ -145,9 +145,9 @@ function _kodeFlowTrigger() {
         switch (_context4.prev = _context4.next) {
           case 0:
             window.Ably = new _ablyCommonjs.Realtime(config.region);
-            channel = window.Ably.channels.get("".concat(connectorId, "-flow")); // subscribe to channel for this flow
+            channel = window.Ably.channels.get("".concat(connectorId, "-flow-in")); // subscribe to channel for this flow
 
-            channel.publish("".concat(connectorId, "-flow"), data);
+            channel.publish("".concat(connectorId, "-flow-in"), data);
 
           case 3:
           case "end":
@@ -170,7 +170,7 @@ function _kodeFlowData() {
       while (1) {
         switch (_context5.prev = _context5.next) {
           case 0:
-            channel = window.Ably.channels.get("".concat(connectorId, "-flow")); // subscribe to channel for this flow
+            channel = window.Ably.channels.get("".concat(connectorId, "-flow-out")); // subscribe to channel for this flow
 
             channel.subscribe(function (data) {
               if (data) {
