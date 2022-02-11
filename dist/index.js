@@ -133,20 +133,20 @@ function kodeConnect(config, appId, apiKey) {
   channel.publish("".concat(appId, "-").concat(apiKey, "-auth"), "connected_user_".concat(navigator.userAgent));
 }
 
-function kodeFlowTrigger(_x7, _x8, _x9) {
+function kodeFlowTrigger(_x7, _x8) {
   return _kodeFlowTrigger.apply(this, arguments);
 }
 
 function _kodeFlowTrigger() {
-  _kodeFlowTrigger = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4(flowId, apiKey, data) {
+  _kodeFlowTrigger = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4(connectorId, data) {
     var channel;
     return regeneratorRuntime.wrap(function _callee4$(_context4) {
       while (1) {
         switch (_context4.prev = _context4.next) {
           case 0:
-            channel = window.Ably.channels.get("".concat(flowId, "-").concat(apiKey, "-flow")); // subscribe to channel for this flow
+            channel = window.Ably.channels.get("".concat(connectorId, "-flow")); // subscribe to channel for this flow
 
-            channel.publish("".concat(flowId, "-").concat(apiKey, "-flow"), data);
+            channel.publish("".concat(connectorId, "-flow"), data);
 
           case 2:
           case "end":
@@ -158,18 +158,18 @@ function _kodeFlowTrigger() {
   return _kodeFlowTrigger.apply(this, arguments);
 }
 
-function kodeFlowData(_x10, _x11) {
+function kodeFlowData(_x9, _x10) {
   return _kodeFlowData.apply(this, arguments);
 }
 
 function _kodeFlowData() {
-  _kodeFlowData = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee5(flowId, apiKey) {
+  _kodeFlowData = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee5(connectorId, apiKey) {
     var channel;
     return regeneratorRuntime.wrap(function _callee5$(_context5) {
       while (1) {
         switch (_context5.prev = _context5.next) {
           case 0:
-            channel = window.Ably.channels.get("".concat(flowId, "-").concat(apiKey, "-flow")); // subscribe to channel for this flow
+            channel = window.Ably.channels.get("".concat(connectorId, "-flow")); // subscribe to channel for this flow
 
             channel.subscribe(function (data) {
               if (data) {

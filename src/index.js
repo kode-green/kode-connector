@@ -70,19 +70,19 @@ export function kodeConnect(config, appId, apiKey) {
   );
 }
 
-export async function kodeFlowTrigger(flowId, apiKey, data) {
+export async function kodeFlowTrigger(connectorId, data) {
   const channel = window.Ably.channels.get(
-    `${flowId}-${apiKey}-flow`
+    `${connectorId}-flow`
   );
   // subscribe to channel for this flow
   channel.publish(
-    `${flowId}-${apiKey}-flow`,
+    `${connectorId}-flow`,
     data
   )
 }
-export async function kodeFlowData(flowId, apiKey) {
+export async function kodeFlowData(connectorId, apiKey) {
   const channel = window.Ably.channels.get(
-    `${flowId}-${apiKey}-flow`
+    `${connectorId}-flow`
   );
   // subscribe to channel for this flow
   channel.subscribe((data) => {
